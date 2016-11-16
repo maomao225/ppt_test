@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Moocap 前端技术乱炖</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Moocap</h1>
+					<h3>前端技术乱炖</h3>
+					<p>
+						<small>Created by <a href="http://github.com/">毛矛</a></small>
+					</p>
+				</section>
+
+				<section>
+					<h2>List of things</h2>
+					<ul>
+						<li>npm 包管理 </li>
+						<li>semver</li>
+						<li>npm scripts</li>
+						<li>webpack</li>
+						<li>es6</li>
+						<li>hot-reload</li>
+						<li>vue</li>
+					</ul>
+				</section>
+
+				<section>
+					<section>
+						<h1>npm 包管理</h1>
+					</section>
+					<section>
+						<h2>常用包管理方式</h2>
+						<ul>
+							<li>bower</li>
+							<li>component</li>
+							<li>composer</li>
+							<li>spm</li>
+							<li>jspm</li>
+							<li>DIY</li>
+						</ul>
+					</section>
+					<section>
+						<h2>bower vs npm</h2>
+						<table style="font-size:20px">
+							<thead>
+								<tr>
+									<th>包管理器</th>
+									<th>模块配置文件</th>
+									<th>第三方CLI依赖</th>
+									<th>面向</th>
+									<th>依赖结构</th>
+									<th>来源</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>bower</td>
+									<td>bower.json</td>
+									<td>依赖bower</td>
+									<td>前端</td>
+									<td>扁平依赖</td>
+									<td>github</td>
+								</tr>
+								<tr>
+									<td>npm</td>
+									<td>package.json</td>
+									<td>无</td>
+									<td>前端/服务器端</td>
+									<td>树依赖</td>
+									<td>npm registry</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section>
+						<h3>为什么不要再使用bower</h3>
+						<ol style="font-size:20px">
+							<li>bower现在处于半死状态，核心开发者只剩下一个</li>
+							<li>平铺依赖，多模块互相依赖下管理困难</li>
+							<li>从bower到npm已经是趋势</li>
+							<li>依赖直接取github, 源码跟部署代码不区分<aside style="font-size:12px">(eg. jquery就不得不建立一个<a href="https://github.com/jquery/jquery-dist">jquery-dist</a>的git仓库专门给bower用)</aside></li>
+						</ol>
+						<img data-src="images/18.png">
+						<img data-src="images/19.png">
+					</section>
+					<section>
+						<h6>dependencies, devDependencies, peerDependencies</h6>
+						<table style="font-size:20px">
+							<thead>
+								<tr>
+									<th>字段</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>dependencies</td>
+									<td>产品运行过程中实际需要用到的模块, 树依赖</td>
+								</tr>
+								<tr>
+									<td>devDependencies</td>
+									<td>开发过程中需要用到的模块, 树依赖</td>
+								</tr>
+								<tr>
+									<td>peerDependencies</td>
+									<td>一般是给某模块作插件时用到,扁平依赖, eg: <a href="https://github.com/gruntjs/grunt-contrib-uglify/blob/v0.5.0/package.json">grunt-contrib-uglify</a>
+									<aside style="font-size:14px">npm < 3, 如果当前没有，直接安装，如果当前已经安装过或版本不兼容，error</aside>
+									<aside style="font-size:14px">npm >= 3, 如果当前没有，warning, 需手动安装</aside>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section>
+						<h2>私有npm库</h2>
+						<ul>
+							<li>免费： 阿里开源的 <a href="https://gofore.com/stop-using-bower/">cnpm</a></li>
+							<li>收费： 第三方托管 <a href="https://www.nodejitsu.com/">nodejitsu</a></li>
+						</ul>
+					</section>
+					<section>
+						<h2>参考</h2>
+						<ul>
+							<li><a href="http://npm.taobao.org/">Why We Should Stop Using Bower</a></li>
+							<li><a href="https://medium.com/@nickheiner/why-my-team-uses-npm-instead-of-bower-eecfe1b9afcb#.2t7icqqh1">Why my team uses npm instead of bower</a></li>
+							<li><a href="https://docs.npmjs.com/files/package.json">Specifics of npm's package.json</a></li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>semver</h1>
+					</section>
+					<section>
+						<h2>semver概念</h2>
+						<p>
+							语义化的版本控制(规范、约定)
+						</p>
+					</section>
+					<section>
+						<h2>semver格式</h2>
+						<p>版本格式：主版本号.次版本号.修订号, 如 1.2.10</p>
+						<ul>
+							<li>主版本号：当你做了不兼容的 API 修改</li>
+							<li>次版本号：当你做了向下兼容的功能性新增</li>
+							<li>修正号： 当你做了向下兼容的问题修正</li>
+						</ul>
+					</section>
+					<section>
+						<h2>为什么使用semver</h2>
+						<ul>
+							<li>确保每次套件升级的运作与版本号的表述一致</li>
+							<li>提供一个健全的方式来发行以及升级套件</li>
+							<li>semver也是npm组件的标准（npm version patch|minor|major）</li>
+						</ul>
+					</section>
+					<section>
+						<h2>package.json 中的组件版本管理</h2>
+						<img data-src="images/2.png">
+					</section>
+					<section>
+						<h2>参考</h2>
+						<ul>
+							<li><a href="http://semver.org/lang/zh-CN/">semver规范</a></li>
+							<li><a href="https://github.com/npm/node-semver">node-semver</a></li>
+							<li><a href="https://docs.npmjs.com/files/package.json">package.json dependences</a></li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>npm scripts</h1>
+					</section>
+					<section>
+						<h2>什么是 npm scripts</h2>
+						<p>package.json中</p>
+						<pre>
+							<code class="hljs" data-trim >
+{
+  "scripts": {
+    "test": "jshint . --exclude node_modules"
+  },
+  "devDependencies": {
+    "jshint": "^2.5.1"
+  }
+}
+							</code>
+						</pre>
+						<p>命令行直接运行</p>
+						<code class="hljs">npm run test</code>
+					</section>
+					<section>
+						<h2>npm scripts还可以做哪些事</h2>
+						<p>moocap项目为例:</p>
+						<pre><code class="hljs" data-trim>
+"scripts": {
+	"dev": "webpack-dev-server --inline --hot --quiet",
+	"build": "rm -rf static/* && webpack --progress --hide-modules --config webpack.production.js",
+	"publish": "npm run build && ./bin/upload",
+	"upload": "./bin/upload",
+	"online": "npm run build && ./bin/online"
+}
+						</code></pre>
+						<p>支持Hook:</p>
+						<pre><code class="hljs" data-trim>
+“prebuild” : “jshint xxx”,
+“build” : “build xxx”,
+“postbuild” : “echo ‘finish’”
+
+// 执行`npm run build`, 会依次执行prebuild,build,postbuild
+						</code></pre>
+					</section>
+					<section>
+						<h2>构建工具的比较</h2>
+						<img data-src="images/17.png">
+					</section>
+					<section>
+						<h2>什么情况下使用grunt?</h2>
+						<p>建议</p>
+						<p style="font-size:20px">新的项目，在任何情况下都不再建议使用grunt</p>
+						<br>
+						<p>原因</p>
+						<ol style="font-size:20px">
+							<li>不同于gulp的管道操作方式，grunt操作文件产生临时文件，后续task再操作临时文件产生结果，相当于涉及多次对同一文件IO。</li>
+							<li>config文件的配置方式，task太多太复杂时，难以维护。</li>
+							<li>相比gulp,没有优势</li>
+						</ol>
+					</section>
+					<section>
+						<h2>什么情况下使用gulp?</h2>
+						<ol>
+							<li>喜欢gulp的流操作方式</li>
+							<li>构建仅仅是代码编译压缩打包等等常规工作流</li>
+							<li>需要跨平台执行任务</li>
+						</ol>
+					</section>
+					<section>
+						<h2>什么情况下使用npm scripts</h2>
+						<ol>
+							<li>不想依赖全局gulp/grunt命令</li>
+							<li>如果喜爱管线操作，使用vinyl-fs来替代gulp</li>
+							<li>需要构建非常规的工作流(发布，同步等等流程)</li>
+							<li>和webpack配合使用时（webpack能够完成大部分构建功能）</li>
+						</ol>
+					</section>
+					<section>
+						<h2>参考</h2>
+						<ul>
+							<li><a href="https://medium.freecodecamp.com/why-i-left-gulp-and-grunt-for-npm-scripts-3d6853dd22b8">Why I Left Gulp and Grunt for npm Scripts</a></li>
+							<li><a href="https://ponyfoo.com/articles/choose-grunt-gulp-or-npm">Choose: Grunt, Gulp, or npm?</a></li>
+							<li><a href="http://engineering.hobsons.com/2015/06/26/build-tools-vs-npm-scripts-why-not-both/">Build Tools vs npm Scripts</a></li>
+							<li><a href="https://github.com/gulpjs/vinyl-fs">vinyl-fs</a></li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>webpack</h1>
+					</section>
+					<section data-markdown>
+						## 各工具的分类
+
+						* gulp/grunt: task runner
+						* rjs/browserify/webpack: modules loader
+					</section>
+					<section>
+						<h6>require.js vs browerify vs webpack</h6>
+						<table style="font-size:20px">
+							<thead>
+								<tr>
+									<th>模块加载器</th>
+									<th>模块规范</th>
+									<th>别名(Aliases)支持</th>
+									<th>内存占用</th>
+									<th>与其他模块的集成(bower/npm...)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>require.js</td>
+									<td>AMD</td>
+									<td>支持</td>
+									<td>低<aside style="font-size:12px">(源码无需保存在内存ram中)</aside></td>
+									<td>差<aside style="font-size:12px">(需要shimmed)</aside></td>
+								</tr>
+								<tr>
+									<td>browserify</td>
+									<td>CommonJs</td>
+									<td>不支持</td>
+									<td>高</td>
+									<td>良</td>
+								</tr>
+								<tr>
+									<td>webpack</td>
+									<td>CommonJs</td>
+									<td>支持</td>
+									<td>高</td>
+									<td>好<aside style="font-size:12px">(几乎全自动化)</aside></td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section data-markdown>
+						## webpack特点
+
+						* 组件化的管理
+						* 支持主流的模块加载方式(AMD，CommonJS，globals)
+						* 资源抽象为模块(images/css/js/es...)
+						* 热替换
+						* 各种不同资源对应的loader来对各资源做处理
+						* 配置文件
+						* 很好的 CSS 处理方式和支持热加载
+						* 不仅仅是一个模块化工具，还能够完成大部分构建任务
+					</section>
+					<section data-markdown>
+						![](images/15.png)						
+					</section>
+					<section data-markdown>
+						## webpack 中简单的mock实现
+
+						![](images/16.png)
+					</section>
+					<section>
+						<h2>参考</h2>
+						<ul>
+							<li><a href="http://hackhat.com/p/110/module-loader-webpack-vs-requirejs-vs-browserify/">Module loader comparison: Webpack vs Require.js vs Browserify</a></li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>ES 6</h1>
+					</section>
+					<section data-markdown>
+						## 模块依赖 import/export
+
+						![](images/5.png)
+						![](images/6.png)
+					</section>
+					<section data-markdown>
+						## 块级作用域 let/const
+
+						![](images/7.png)
+					</section>
+					<section data-markdown>
+						## Classes
+
+						![](images/8.png)
+					</section>
+					<section data-markdown>
+						## Arrows and Lexical This
+
+						![](images/9.png)
+					</section>
+					<section data-markdown>
+						### 参考
+						* [babel](http://babeljs.io/)
+						* [es6](http://es6.ruanyifeng.com/)
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>hot reload</h1>
+					</section>
+					<section data-markdown>
+						### 一些说明
+
+						* 与commonjs模式结合
+						* 构建模块tree, 类似dom的冒泡方式
+						* 通过websocket同本地服务器端通信
+						* 过程: A模块修改-> websocket-> A模块依赖树上层B模块更新->A模块更新
+						* 效果: 页面无刷新，状态保留，即时更新
+					</section>
+					<section>
+						<h2>参考</h2>
+						<ul>
+							<li><a href="https://medium.com/@the1mills/hot-reloading-with-react-requirejs-7b2aa6cb06e1#.cmjkxvus3">Hot-reloading in 2015</a></li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Vue</h1>
+					</section>
+					<section>
+						<h6>vue vs avalon vs angular(1.x)</h6>
+						<table style="font-size:18px">
+							<thead>
+								<tr>
+									<th>框架</th>
+									<th>体积</th>
+									<th>上手难度</th>
+									<th>社区</th>
+									<th>文档</th>
+									<th>速度</th>
+									<th>扩展</th>
+									<th>兼容性</th>
+									<th>功能</th>
+									<th>版本风险</th>
+									<th>编写规则限制</th>
+									<th>坑</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>vue</td>
+									<td>~28k</td>
+									<td>易</td>
+									<td>活跃</td>
+									<td>优</td>
+									<td>快</td>
+									<td>一般</td>
+									<td>ie9+</td>
+									<td>轻量级</td>
+									<td>中</td>
+									<td>少</td>
+									<td>少</td>
+								</tr>
+								<tr>
+									<td>angular</td>
+									<td>~62k</td>
+									<td>难</td>
+									<td>活跃</td>
+									<td>优</td>	
+									<td>慢</td>
+									<td>多</td>
+									<td>ie8+</td>
+									<td>中等</td>
+									<td>严重</td>
+									<td>严格</td>
+									<td>多</td>
+								</tr>
+								<tr>
+									<td>avalon</td>
+									<td>~35k</td>
+									<td>中等</td>
+									<td>次活跃</td>
+									<td>中</td>
+									<td>快</td>
+									<td>一般</td>
+									<td>ie6+</td>
+									<td>重量级</td>
+									<td>高</td>
+									<td>中等</td>
+									<td>中等</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section data-markdown>
+						### vue-loader 
+
+						![](images/10.png)
+					</section>
+					<section data-markdown>
+						### vue-loader 
+
+						![](images/11.png)
+					</section>
+					<section data-markdown>
+						### vue-loader 
+
+						![](images/12.png)
+					</section>
+					<section data-markdown>
+						### vue的组件
+
+						![](images/13.png)
+					</section>
+					<section data-markdown>
+						### vue-router
+						![](images/14.png)
+					</section>
+					<section>
+						<h2>参考</h2>
+						<ul>
+							<li><a href="http://vuejs.org/api/">vue api</a></li>
+							<li><a href="http://www.bootcdn.cn/">bootcdn</a></li>
+							<li><a href="https://www.zhihu.com/question/27791075">vue，angular，avalon这三种MVVM框架之间有什么优缺点？</a></li>
+						</ul>
+					</section>
+				</section>
+
+				<section style="text-align: left;">
+					<h1>THE END</h1>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
